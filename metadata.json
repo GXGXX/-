@@ -1,0 +1,5 @@
+{
+  "name": "Life Grid (人生格子)",
+  "description": "A visual tool to calculate and display the remaining time in your life distributed among various activities based on life expectancy data.",
+  "requestFramePermissions": []
+}

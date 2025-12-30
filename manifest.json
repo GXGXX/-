@@ -1,0 +1,17 @@
+{
+  "short_name": "人生格子",
+  "name": "Life Grid - 人生格子",
+  "description": "看见时间，看见人生",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#fdfbf7",
+  "background_color": "#fdfbf7"
+}
