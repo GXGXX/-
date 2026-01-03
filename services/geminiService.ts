@@ -1,7 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 import { LifeExpectancyData } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Remove top-level initialization to prevent crash if API_KEY is missing during build/render
+// const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const fetchLifeExpectancy = async (gender: string): Promise<LifeExpectancyData> => {
   // Preset data based on user request to speed up generation
@@ -26,7 +27,18 @@ export const sendChatMessage = async (
   useThinking: boolean = false
 ) => {
   try {
-    const modelId = "gemini-3-pro-preview";
+    const apiKey = process.env.API_KEY;
+
+    // Check if API Key exists before initializing
+    if (!apiKey || apiKey === 'undefined' || apiKey === '') {
+      return "⚠️ 尚未检测到 API Key。\n\n这通常是因为环境变量没有正确注入。\n请尝试在 Vercel 对应的 Deployment 中点击 'Redeploy' (重新部署) 以便让新的环境变量生效。";
+    }
+
+    const ai = new GoogleGenAI({ apiKey: apiKey });
+    
+    // Use Flash for faster response and higher availability on free tiers
+    // Use Pro only when Thinking Mode is explicitly requested
+    const modelId = useThinking ? "gemini-3-pro-preview" : "gemini-3-flash-preview";
     
     const chatHistory = history.map(h => ({
       role: h.role,
@@ -43,8 +55,15 @@ export const sendChatMessage = async (
 
     const result = await chat.sendMessage({ message });
     return result.text;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Chat error:", error);
-    return "抱歉，我现在无法回答。请稍后再试。";
+    const errorMsg = error.message || error.toString();
+    
+    // Return friendly error message based on common issues
+    if (errorMsg.includes("400") || errorMsg.includes("API key not valid")) {
+       return `❌ API Key 无效。\n请检查 Vercel 环境变量中填写的 API Key 是否有复制错误（如多余的空格）。\n(错误信息: ${errorMsg})`;
+    }
+    
+    return `抱歉，AI 服务暂时不可用。\n错误详情: ${errorMsg}\n\n请稍后再试，或关闭“深度思考”模式。`;
   }
 };
