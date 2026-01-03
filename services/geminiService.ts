@@ -59,6 +59,11 @@ export const sendChatMessage = async (
     console.error("Chat error:", error);
     const errorMsg = error.message || error.toString();
     
+    // Handle Quota/Rate Limit (429 / RESOURCE_EXHAUSTED)
+    if (errorMsg.includes("429") || errorMsg.includes("RESOURCE_EXHAUSTED") || errorMsg.includes("quota")) {
+       return `⏳ **额度已用尽 (429)**\n\nGoogle Gemini API 的调用频率或额度已达上限。\n\n**建议：**\n1. 请休息几分钟再试（免费版有每分钟限制）。\n2. 尝试关闭“深度思考”模式（该模式消耗额度更多）。\n3. 如果持续报错，可能今日额度已耗尽，请明日再试。`;
+    }
+
     // Handle Google Cloud API Key Restrictions (Referer Blocked)
     if (errorMsg.includes("blocked") && (errorMsg.includes("referer") || errorMsg.includes("PERMISSION_DENIED"))) {
         return `🚫 **访问被拒绝 (403)**\n\n您的 API Key 设置了【网站限制】，但 Vercel 的网址未被允许。\n\n**解决方法：**\n1. 打开 Google Cloud Console > Credentials。\n2. 编辑您的 API Key。\n3. 在 "Website restrictions" 中添加当前网址：\n   \`${window.location.origin}\`\n4. 或者暂时选择 "None" 取消限制。`;
