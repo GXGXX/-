@@ -27,7 +27,7 @@ const TimeStats: React.FC<Props> = ({ birthDate, lifeExpectancyYears }) => {
   const msPassed = now.getTime() - birth.getTime();
   const msRemaining = death.getTime() - now.getTime();
 
-  const MS_IN_SEC = 1000;
+  // const MS_IN_SEC = 1000; // Not used for display anymore
   const MS_IN_MIN = 60 * 1000;
   const MS_IN_HOUR = 60 * 60 * 1000;
   const MS_IN_DAY = 24 * 60 * 60 * 1000;
@@ -55,12 +55,10 @@ const TimeStats: React.FC<Props> = ({ birthDate, lifeExpectancyYears }) => {
                     <StatItem value={val / MS_IN_MONTH} unit="月" />
                     <StatItem value={val / MS_IN_DAY} unit="日" />
                 </div>
-                {/* Row 2: Hours, Minutes, Seconds - Stack vertically on mobile because numbers are huge */}
-                {/* Increased breakpoint to 'md' (768px) to ensure phones always stack this row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-2">
+                {/* Row 2: Hours, Minutes - Stack vertically on mobile, 2 cols on tablet+ */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <StatItem value={val / MS_IN_HOUR} unit="时" />
                     <StatItem value={val / MS_IN_MIN} unit="分" />
-                    <StatItem value={val / MS_IN_SEC} unit="秒" />
                 </div>
             </div>
         </div>
