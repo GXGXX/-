@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import InputForm from './components/InputForm';
 import LifeGrid from './components/LifeGrid';
 import StatsPanel from './components/StatsPanel';
-import ChatBot from './components/ChatBot';
 import TimeStats from './components/TimeStats';
 import { UserData, LifeAssumptions, LifeExpectancyData, GridStats, ParentsDetail } from './types';
 
@@ -179,8 +178,6 @@ const App: React.FC = () => {
           </div>
         )}
       </main>
-
-      <ChatBot />
 
       <style>{`
         @keyframes fadeInUp {
