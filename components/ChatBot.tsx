@@ -105,7 +105,7 @@ const ChatBot: React.FC = () => {
                       <div className={`dot absolute left-0.5 top-0.5 bg-white w-3 h-3 rounded-full transition transform ${useThinking ? 'translate-x-4' : 'translate-x-0'}`}></div>
                   </div>
                   <span className={`ml-2 text-xs font-medium transition ${useThinking ? 'text-blue-600' : 'text-gray-500'}`}>
-                      深度思考 (Gemini 3 Pro)
+                      深度思考 (Gemini 3 Flash)
                   </span>
               </label>
            </div>

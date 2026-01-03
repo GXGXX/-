@@ -36,20 +36,24 @@ export const sendChatMessage = async (
 
     const ai = new GoogleGenAI({ apiKey: apiKey });
     
-    // Use Flash for faster response and higher availability on free tiers
-    // Use Pro only when Thinking Mode is explicitly requested
-    const modelId = useThinking ? "gemini-3-pro-preview" : "gemini-3-flash-preview";
+    // Always use Flash to save quota and improve availability.
+    // Flash also supports thinking config.
+    const modelId = "gemini-3-flash-preview";
     
     const chatHistory = history.map(h => ({
       role: h.role,
       parts: [{ text: h.text }],
     }));
 
+    // Flash allows a smaller thinking budget, generally 8192-24576 depending on version, 
+    // but we'll set a moderate one. If Thinking is off, budget is undefined.
+    const thinkingBudget = useThinking ? 16384 : undefined;
+
     const chat = ai.chats.create({
       model: modelId,
       history: chatHistory,
       config: {
-        thinkingConfig: useThinking ? { thinkingBudget: 32768 } : undefined,
+        thinkingConfig: thinkingBudget ? { thinkingBudget } : undefined,
       }
     });
 
