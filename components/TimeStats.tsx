@@ -35,8 +35,8 @@ const TimeStats: React.FC<Props> = ({ birthDate, lifeExpectancyYears }) => {
   const MS_IN_MONTH = MS_IN_YEAR / 12;
 
   const StatItem = ({ value, unit }: { value: number, unit: string }) => (
-      <div className="flex items-baseline justify-start gap-1">
-          <span className="text-lg sm:text-2xl font-light text-gray-800 tabular-nums tracking-tight truncate">
+      <div className="flex items-baseline justify-start gap-1 min-w-0 overflow-hidden">
+          <span className="text-lg md:text-2xl font-light text-gray-800 tabular-nums tracking-tight truncate block max-w-full">
               {value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
           </span>
           <span className="text-sm text-gray-400 font-normal whitespace-nowrap">{unit}</span>
@@ -46,7 +46,7 @@ const TimeStats: React.FC<Props> = ({ birthDate, lifeExpectancyYears }) => {
   const Card = ({ title, ms }: { title: string, ms: number }) => {
       const val = Math.max(0, ms);
       return (
-        <div className="bg-white p-5 sm:p-6 rounded-xl shadow-lg border border-gray-100 flex-1">
+        <div className="bg-white p-5 sm:p-6 rounded-xl shadow-lg border border-gray-100 flex-1 min-w-0">
             <h3 className="text-lg font-bold text-gray-800 mb-4 sm:mb-6">{title}</h3>
             <div className="space-y-4">
                 {/* Row 1: Years, Months, Days - Keep as grid-cols-3 as these numbers are usually small */}
@@ -56,7 +56,8 @@ const TimeStats: React.FC<Props> = ({ birthDate, lifeExpectancyYears }) => {
                     <StatItem value={val / MS_IN_DAY} unit="日" />
                 </div>
                 {/* Row 2: Hours, Minutes, Seconds - Stack vertically on mobile because numbers are huge */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2">
+                {/* Increased breakpoint to 'md' (768px) to ensure phones always stack this row */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-2">
                     <StatItem value={val / MS_IN_HOUR} unit="时" />
                     <StatItem value={val / MS_IN_MIN} unit="分" />
                     <StatItem value={val / MS_IN_SEC} unit="秒" />
