@@ -43,15 +43,20 @@ const ChatBot: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-none">
       {/* Chat Window */}
       <div 
-        className={`bg-white rounded-2xl shadow-2xl border border-gray-200 w-80 sm:w-96 mb-4 overflow-hidden transition-all duration-300 origin-bottom-right pointer-events-auto
+        className={`bg-white rounded-2xl shadow-2xl border border-gray-200 
+          w-[calc(100vw-2rem)] sm:w-96 
+          mb-4 overflow-hidden transition-all duration-300 origin-bottom-right pointer-events-auto flex flex-col
           ${isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-90 translate-y-10 pointer-events-none'}`}
-        style={{ maxHeight: '600px', display: isOpen ? 'flex' : 'none', flexDirection: 'column' }}
+        style={{ 
+          maxHeight: 'min(600px, 75vh)', // Limit height to 75% of viewport height or 600px
+          display: isOpen ? 'flex' : 'none', 
+        }}
       >
         {/* Header */}
-        <div className="bg-slate-800 text-white p-4 flex justify-between items-center">
+        <div className="bg-slate-800 text-white p-4 flex justify-between items-center shrink-0">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined">smart_toy</span>
             <span className="font-semibold">AI 人生助手</span>
@@ -62,11 +67,11 @@ const ChatBot: React.FC = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 h-96">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 min-h-0">
           {messages.map((msg, idx) => (
             <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div 
-                className={`max-w-[85%] p-3 rounded-2xl text-sm leading-relaxed ${
+                className={`max-w-[85%] p-3 rounded-2xl text-sm leading-relaxed break-words ${
                   msg.role === 'user' 
                     ? 'bg-blue-600 text-white rounded-br-none' 
                     : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-sm'
@@ -90,7 +95,7 @@ const ChatBot: React.FC = () => {
         </div>
 
         {/* Input */}
-        <div className="p-3 bg-white border-t border-gray-100">
+        <div className="p-3 bg-white border-t border-gray-100 shrink-0">
            {/* Controls */}
            <div className="flex items-center justify-between mb-2 px-1">
               <label className="flex items-center cursor-pointer group" title="开启深度思考模式以回答复杂问题">

@@ -59,6 +59,11 @@ export const sendChatMessage = async (
     console.error("Chat error:", error);
     const errorMsg = error.message || error.toString();
     
+    // Handle Google Cloud API Key Restrictions (Referer Blocked)
+    if (errorMsg.includes("blocked") && (errorMsg.includes("referer") || errorMsg.includes("PERMISSION_DENIED"))) {
+        return `🚫 **访问被拒绝 (403)**\n\n您的 API Key 设置了【网站限制】，但 Vercel 的网址未被允许。\n\n**解决方法：**\n1. 打开 Google Cloud Console > Credentials。\n2. 编辑您的 API Key。\n3. 在 "Website restrictions" 中添加当前网址：\n   \`${window.location.origin}\`\n4. 或者暂时选择 "None" 取消限制。`;
+    }
+
     // Return friendly error message based on common issues
     if (errorMsg.includes("400") || errorMsg.includes("API key not valid")) {
        return `❌ API Key 无效。\n请检查 Vercel 环境变量中填写的 API Key 是否有复制错误（如多余的空格）。\n(错误信息: ${errorMsg})`;
