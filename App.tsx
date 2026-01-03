@@ -115,7 +115,7 @@ const App: React.FC = () => {
   const handleDataReady = (
     uData: UserData, 
     assump: LifeAssumptions, 
-    lData: LifeExpectancyData,
+    lData: LifeExpectancyData, 
     pLifeData: LifeExpectancyData
   ) => {
     setUserData(uData);
@@ -150,9 +150,9 @@ const App: React.FC = () => {
                 lifeExpectancyYears={lifeData.age} 
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
-              {/* Left: Stats Panel */}
-              <div className="lg:col-span-4 xl:col-span-3 order-2 lg:order-1">
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+              {/* Left: Stats Panel (Bottom on mobile, Left on Desktop) */}
+              <div className="xl:col-span-4 order-2 xl:order-1">
                 <StatsPanel 
                   stats={gridStats} 
                   assumptions={assumptions} 
@@ -160,14 +160,14 @@ const App: React.FC = () => {
                 />
                 <button 
                    onClick={() => setDataReady(false)}
-                   className="mt-4 w-full text-gray-500 text-sm hover:text-gray-800 underline"
+                   className="mt-6 w-full text-gray-500 text-sm hover:text-gray-800 underline transition-colors"
                 >
                   重新计算
                 </button>
               </div>
 
-              {/* Right: Grid */}
-              <div className="lg:col-span-8 xl:col-span-9 order-1 lg:order-2">
+              {/* Right: Grid (Top on mobile, Right on Desktop) */}
+              <div className="xl:col-span-8 order-1 xl:order-2">
                 <LifeGrid 
                   stats={gridStats} 
                   assumptions={assumptions} 
