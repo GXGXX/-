@@ -9,14 +9,13 @@ const TimeStats: React.FC<Props> = ({ birthDate, lifeExpectancyYears }) => {
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 100);
+    const timer = setInterval(() => setNow(new Date()), 1000); // Update every second is enough now
     return () => clearInterval(timer);
   }, []);
 
   const birth = new Date(birthDate);
   const death = new Date(birth.getTime());
   // Calculate death date roughly by adding years.
-  // Using a simplified model where lifeExpectancyYears is purely additive to birth year
   death.setFullYear(death.getFullYear() + Math.floor(lifeExpectancyYears));
   // Add remaining fraction of a year
   const remainder = lifeExpectancyYears % 1;
@@ -27,7 +26,6 @@ const TimeStats: React.FC<Props> = ({ birthDate, lifeExpectancyYears }) => {
   const msPassed = now.getTime() - birth.getTime();
   const msRemaining = death.getTime() - now.getTime();
 
-  // const MS_IN_SEC = 1000; // Not used for display anymore
   const MS_IN_MIN = 60 * 1000;
   const MS_IN_HOUR = 60 * 60 * 1000;
   const MS_IN_DAY = 24 * 60 * 60 * 1000;
@@ -49,13 +47,13 @@ const TimeStats: React.FC<Props> = ({ birthDate, lifeExpectancyYears }) => {
         <div className="bg-white p-5 sm:p-6 rounded-xl shadow-lg border border-gray-100 flex-1 min-w-0">
             <h3 className="text-lg font-bold text-gray-800 mb-4 sm:mb-6">{title}</h3>
             <div className="space-y-4">
-                {/* Row 1: Years, Months, Days - Keep as grid-cols-3 as these numbers are usually small */}
+                {/* Row 1: Years, Months, Days - usually fit on one line or 3 cols */}
                 <div className="grid grid-cols-3 gap-2 border-b border-gray-50 pb-4">
                     <StatItem value={val / MS_IN_YEAR} unit="年" />
                     <StatItem value={val / MS_IN_MONTH} unit="月" />
                     <StatItem value={val / MS_IN_DAY} unit="日" />
                 </div>
-                {/* Row 2: Hours, Minutes - Stack vertically on mobile, 2 cols on tablet+ */}
+                {/* Row 2: Hours, Minutes - Stack on mobile, side-by-side on tablet+ */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <StatItem value={val / MS_IN_HOUR} unit="时" />
                     <StatItem value={val / MS_IN_MIN} unit="分" />
